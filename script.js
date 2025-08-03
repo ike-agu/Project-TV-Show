@@ -7,7 +7,8 @@ function setup() {
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  // rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+  const episodesContainer = document.createElement("div")
+  episodesContainer.classList.add("episodes-container")
 
   //displays all episode cards
   const allEpisodesList = [];
@@ -34,6 +35,7 @@ function episodeCard(tagName, textContent, src, parentElement) {
 //Creates episode cards  with all its information
 function allEpisodesCard(episode){
   const cardForEpisodes = document.createElement("section")
+  cardForEpisodes.classList.add("card-for-episodes")
   episodeCard("img", `${episode.image.medium}`,  episode.image.medium,  cardForEpisodes);
   episodeCard("h3", `Episode: ${episode.name}`, null,  cardForEpisodes);
   episodeCard("p", `Season: ${episode.season}`,null, cardForEpisodes);
