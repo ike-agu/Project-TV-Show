@@ -7,8 +7,8 @@ function setup() {
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
-  const episodesContainer = document.createElement("div")
-  episodesContainer.classList.add("episodes-container")
+  const episodesContainer = document.createElement("div");
+  episodesContainer.classList.add("episodes-container");
 
   //displays all episode cards
   const allEpisodesList = [];
@@ -16,7 +16,22 @@ function makePageForEpisodes(episodeList) {
     allEpisodesList.push(allEpisodesCard(item));
   }
   rootElem.append(...allEpisodesList);
+
+  // 4. Create footer
+  const footer = document.createElement("footer");
+  footer.style.marginTop = "2rem"; // Optional styling
+
+  // create TV shows source link
+  const sourceLink = document.createElement("a");
+  sourceLink.textContent = "TV Shows and Series are from TVMaze.com";
+  sourceLink.href = "https://www.tvmaze.com/";
+  sourceLink.target = "_blank";
+  sourceLink.ref = "noopener noreferrer";
+
+  footer.appendChild(sourceLink);
+  document.body.append(footer);
 }
+
 
 
 // Helper function. Creates and appends HTML element to a parent element e.g <h3>, <p>, <img> etc
