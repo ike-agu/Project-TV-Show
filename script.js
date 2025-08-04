@@ -4,7 +4,6 @@ function setup() {
   makePageForEpisodes(allEpisodes);
 }
 
-
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
   const episodesContainer = document.createElement("div");
@@ -19,7 +18,6 @@ function makePageForEpisodes(episodeList) {
 
   // 4. Create footer
   const footer = document.createElement("footer");
-  footer.style.marginTop = "2rem"; // Optional styling
 
   // create TV shows source link
   const sourceLink = document.createElement("a");
@@ -31,8 +29,6 @@ function makePageForEpisodes(episodeList) {
   footer.appendChild(sourceLink);
   document.body.append(footer);
 }
-
-
 
 // Helper function. Creates and appends HTML element to a parent element e.g <h3>, <p>, <img> etc
 function episodeCard(tagName, textContent, src, parentElement) {
@@ -47,19 +43,20 @@ function episodeCard(tagName, textContent, src, parentElement) {
   parentElement.appendChild(element);
   return element;
 }
+
 //Creates episode cards  with all its information
-function allEpisodesCard(episode){
-  const cardForEpisodes = document.createElement("section")
-  cardForEpisodes.classList.add("card-for-episodes")
-  episodeCard("img", `${episode.image.medium}`,  episode.image.medium,  cardForEpisodes);
-  episodeCard("h3", `Episode: ${episode.name}`, null,  cardForEpisodes);
-  episodeCard("p", `Season: ${episode.season}`,null, cardForEpisodes);
-  episodeCard("p", `Episode Number: ${episode.number}`, null, cardForEpisodes);
+function allEpisodesCard(episode) {
+  const cardForEpisodes = document.createElement("section");
+  cardForEpisodes.classList.add("card-for-episodes");
+  let seasonNumber = `${episode.season}`;
+  let episodeNumber = `${episode.number}`;
+  const episodeCode = "S" + seasonNumber.padStart(2, 0) + "E" + episodeNumber.padStart(2, 0);
+  episodeCard("img",`${episode.image.medium}`, episode.image.medium, cardForEpisodes);
+  episodeCard("h3", `Episode: ${episode.name}`, null, cardForEpisodes);
+  episodeCard("p", `Episode Code: ${episodeCode}`, null, cardForEpisodes);
   episodeCard("p", `Summary: ${episode.summary}`, null, cardForEpisodes);
-
-   return cardForEpisodes;
+  
+  return cardForEpisodes;
 }
-
-
 
 window.onload = setup;
