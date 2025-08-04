@@ -50,12 +50,12 @@ function allEpisodesCard(episode) {
   cardForEpisodes.classList.add("card-for-episodes");
   let seasonNumber = `${episode.season}`;
   let episodeNumber = `${episode.number}`;
-  const episodeCode = "S" + seasonNumber.padStart(2, 0) + "E" + episodeNumber.padStart(2, 0);
+  const episodeCode = "S" + seasonNumber.padStart(2, 0) + "E" + episodeNumber.padStart(2, 0);//create Episode Code
   episodeCard("img",`${episode.image.medium}`, episode.image.medium, cardForEpisodes);
-  episodeCard("h3", `Episode: ${episode.name}`, null, cardForEpisodes);
-  episodeCard("p", `Episode Code: ${episodeCode}`, null, cardForEpisodes);
+  episodeCard("h3", `${episode.name}`, null, cardForEpisodes);
+  episodeCard("p", `${episodeCode}`, null, cardForEpisodes);
   episodeCard("p", `Summary: ${episode.summary}`, null, cardForEpisodes);
-  
+
   return cardForEpisodes;
 }
 
