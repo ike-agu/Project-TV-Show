@@ -10,10 +10,7 @@ function makePageForEpisodes(episodeList) {
   episodesContainer.classList.add("episodes-container");
 
   //displays all episode cards
-  const allEpisodesList = [];
-  for (const item of episodeList) {
-    allEpisodesList.push(allEpisodesCard(item));
-  }
+  const allEpisodesList = episodeList.map(allEpisodesCard)
   rootElem.append(...allEpisodesList);
 
   // 4. Create footer
@@ -33,7 +30,6 @@ function makePageForEpisodes(episodeList) {
 // Helper function. Creates and appends HTML element to a parent element e.g <h3>, <p>, <img> etc
 function episodeCard(tagName, textContent, src, parentElement) {
   const element = document.createElement(tagName);
-  element.textContent = textContent;
   if (tagName === "img") {
     element.src = src || textContent;
     element.alt = "Episode Image";
@@ -48,9 +44,11 @@ function episodeCard(tagName, textContent, src, parentElement) {
 function allEpisodesCard(episode) {
   const cardForEpisodes = document.createElement("section");
   cardForEpisodes.classList.add("card-for-episodes");
-  let seasonNumber = `${episode.season}`;
-  let episodeNumber = `${episode.number}`;
+
+  const seasonNumber = `${episode.season}`;
+  const episodeNumber = `${episode.number}`;
   const episodeCode = "S" + seasonNumber.padStart(2, 0) + "E" + episodeNumber.padStart(2, 0);//create Episode Code
+
   episodeCard("img",`${episode.image.medium}`, episode.image.medium, cardForEpisodes);
   episodeCard("h3", `${episode.name}`, null, cardForEpisodes);
   episodeCard("p", `${episodeCode}`, null, cardForEpisodes);
