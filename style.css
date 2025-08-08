@@ -1,3 +1,15 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", "Arial", sans-serif;
+  background: #f4f5f7;
+  color: #1a1a1a;
+}
+
+html {
+  font-size: 16px;
+}
 #root {
   color: rgb(61, 52, 52);
   width: 1200px;
@@ -5,28 +17,47 @@
   border: 1px solid #eaece8;
   border-radius: 10px;
   background-color: rgb(235, 230, 230);
-  font-family: Arial, Helvetica, sans-serif;
   display: flex;
   flex-wrap: wrap;
-
+}
+.controls-container select,
+.controls-container input[type="text"],
+.controls-container input[type="search"] {
+  margin: 15px 0 15px 0;
+  padding: 12px 18px;
+  border-radius: 20px;
+  border: 1.2px solid #b8c0c7;
+  font-size: 1.1rem;
+  background: #fafdff;
+  color: #212121;
+  outline: none;
+  transition: border 0.18s, box-shadow 0.18s;
+  height: 48px;
+  box-sizing: border-box;
 }
 
-.card-for-episodes{
-  border: 1px solid rgb(179, 171, 171);
+.controls-container select:focus,
+.controls-container input[type="text"]:focus,
+.controls-container input[type="search"]:focus {
+  border: 1.5px solid #90caf9;
+  box-shadow: 0 0 8px 1px #b0d7f8;
+}
+
+.card-for-episodes {
+  border: 1px solid rgb(215, 208, 208);
   width: 28%;
-  margin: 20px auto ;
+  margin: 20px auto;
   border-radius: 5px;
   padding: 10px;
-  transition: all .2s ease-in-out;
-
+  transition: all 0.2s ease-in-out;
 }
 
-.card-for-episodes:hover{
+.card-for-episodes:hover {
   background-color: white;
-  transform: scale(1.02)
+  transform: scale(1.02);
 }
 
-.card-for-episodes img{
+.card-for-episodes img {
   width: 100%;
   border-radius: 3px;
 }
@@ -36,8 +67,6 @@ footer {
   text-align: center;
   font-size: 0.9rem;
   color: #444;
-
-
 }
 footer a {
   text-decoration: none;
