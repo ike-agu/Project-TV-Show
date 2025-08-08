@@ -127,7 +127,10 @@ function allEpisodesCard(episode) {
   );
   episodeCard("h3", `${episode.name}`, null, cardForEpisodes);
   episodeCard("p", `${episodeCode}`, null, cardForEpisodes);
-  episodeCard("p", `Summary: ${episode.summary}`, null, cardForEpisodes);
+
+  const summaryDiv = document.createElement("div");
+  summaryDiv.innerHTML = `Summary:${episode.summary}`;
+  cardForEpisodes.appendChild(summaryDiv);
 
   return cardForEpisodes;
 }
