@@ -7,11 +7,12 @@ async function getAllEpisodesData() {
       throw new Error(`HTTP error status: ${response.status}`);
     }
     const data = await response.json();
-    console.log(data);
-    return data;
+    return { success: true, data };
   } catch (error) {
-    console.log("failed to fetch episodes", error.message);
-    //return an empty array to avoid the app from crashing
-    return [];
+    return {
+      success: false,
+      error:
+        "Sorry, something went wrong while loading episodes. Please try refreshing the page.",
+    };
   }
 }
