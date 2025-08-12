@@ -1,6 +1,8 @@
 //You can edit ALL of the code here
-function setup() {
-  const allEpisodes = getAllEpisodes();
+async function setup() {
+const episodeData = await getAllEpisodesData();
+
+  const allEpisodes = episodeData; ;
   makePageForEpisodes(allEpisodes);
 
   //create a container for controls
@@ -82,7 +84,7 @@ function setup() {
 
   footer.appendChild(sourceLink);
   document.body.append(footer);
-}
+};
 
 function makePageForEpisodes(episodeList) {
   const rootElem = document.getElementById("root");
