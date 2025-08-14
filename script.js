@@ -1,21 +1,54 @@
-
-//Global variable to store all episode data for filtering and searching
+//Global variable to store all data
 let allEpisodes = [];
+let allShows = [];
+let currentShow = null;
+
 async function setup() {
   const rootElement = document.getElementById("root");
-  rootElement.textContent = "Loading episodes, Please wait...";
+  rootElement.textContent = "Loading shows and episodes, Please wait...";
 
-  // Fetch episode data from the API (this is an async operation)
-  const episodeData = await getAllEpisodesData();
+  // Fetch shows data from the API first
+  const showsData = await getAllShowsData();
 
-  if (episodeData.success) {
-    allEpisodes = episodeData.data;
+  if (showsData.success) {
+    allShows = showsData.data;
     rootElement.textContent = "";
-    makePageForEpisodes(episodeData.data);
     createControls();
     createFooter();
+
+    // Select first show by default and load its episodes
+    if (allShows.length > 0) {
+      currentShow = allShows[0];
+      await loadEpisodesForShow(currentShow.id);
+    }
   } else {
-    rootElement.textContent = episodeData.error;
+    rootElement.textContent = showsData.error;
+  }
+
+  // Function to load episodes for a selected show
+  async function loadEpisodesForShow(showId) {
+    const rootElement = document.getElementById("root");
+    rootElement.textContent = "Loading episodes, Please wait...";
+
+    // Fetch episode data from the API (this is an async operation)
+    const episodeData = await getEpisodesByShowId(showId);
+
+    if (episodeData.success) {
+      allEpisodes = episodeData.data;
+      rootElement.textContent = "";
+      makePageForEpisodes(episodeData.data);
+
+      // Update episode dropdown
+      updateEpisodeDropdown();
+
+      // Clear search input
+      const searchInput = document.getElementById("search");
+      if (searchInput) {
+        searchInput.value = "";
+      }
+    } else {
+      rootElement.textContent = episodeData.error;
+    }
   }
 
   //Creates the control panel with dropdown selector and search input
@@ -24,6 +57,21 @@ async function setup() {
     const controlsContainer = document.createElement("div");
     controlsContainer.className = "controls-container";
 
+    // Create show select dropdown
+    const showSelectElem = document.createElement("select");
+    showSelectElem.id = "selected-show";
+    showSelectElem.name = "shows";
+
+    // Add shows to dropdown
+    allShows.forEach((show) => {
+      const option = document.createElement("option");
+      option.value = show.id;
+      option.textContent = show.name;
+      showSelectElem.appendChild(option);
+    });
+
+    controlsContainer.appendChild(showSelectElem);
+
     // Create dynamic select dropdown for episodes
     const selectElem = document.createElement("select");
     selectElem.id = "selected-episode";
@@ -31,7 +79,7 @@ async function setup() {
 
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
-    defaultOption.textContent = "Select an episode";
+    defaultOption.textContent = "Show all episodes";
     selectElem.appendChild(defaultOption);
 
     controlsContainer.appendChild(selectElem);
@@ -48,19 +96,56 @@ async function setup() {
     const rootElem = document.getElementById("root");
     document.body.insertBefore(controlsContainer, rootElem);
 
-    // Loop through all episodes to create dropdown options
+    // Add event listeners
+    showSelectElem.addEventListener("change", handleShowSelection);
+    selectElem.addEventListener("change", handleEpisodeSelection);
+    searchInput.addEventListener("input", handleSearch);
+  }
+
+  // Update episode dropdown when show changes
+  function updateEpisodeDropdown() {
+    const selectElem = document.getElementById("selected-episode");
+
+    selectElem.innerHTML = ""; // Clear existing options
+
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "Show all episodes";
+    selectElem.appendChild(defaultOption);
+
+    // Add episodes for current show
     allEpisodes.forEach((episode) => {
       const option = document.createElement("option");
       option.value = episode.id;
-      option.textContent = `S${String(episode.season).padStart(2, "0")}
-    E${String(episode.number).padStart(2, "0")} - ${episode.name}`;
-
+      option.textContent = `S${String(episode.season).padStart(
+        2,
+        "0"
+      )}E${String(episode.number).padStart(2, "0")} - ${episode.name}`;
       selectElem.appendChild(option);
     });
+  }
 
-    // Add event listeners
-    selectElem.addEventListener("change", handleEpisodeSelection);
-    searchInput.addEventListener("input", handleSearch);
+  /**
+   * Handles show selection from the dropdown
+   * Updates current show, resets episode selector and search input,
+   * then loads episodes for the newly selected show
+   * @param {Event} event - The change event from show select dropdown
+   */
+  async function handleShowSelection(event) {
+    const selectedShowId = parseInt(event.target.value, 10);
+    currentShow = allShows.find((show) => show.id === selectedShowId);
+
+    if (currentShow) {
+      // Reset episode selector and search
+      const episodeSelect = document.getElementById("selected-episode");
+      const searchInput = document.getElementById("search");
+
+      episodeSelect.value = "";
+      searchInput.value = "";
+
+      // Load episodes for selected show
+      await loadEpisodesForShow(currentShow.id);
+    }
   }
 
   //Handles when a user selects an episode from the dropdown
@@ -88,7 +173,8 @@ async function setup() {
     // Filter episodes that match the search term in summary, name, or season
     const filteredEpisodes = allEpisodes.filter(
       (episode) =>
-        episode.summary.toLowerCase().includes(searchTerm) ||
+        (episode.summary &&
+          episode.summary.toLowerCase().includes(searchTerm)) ||
         episode.name.toLowerCase().includes(searchTerm) ||
         episode.season.toString().includes(searchTerm)
     );
@@ -112,9 +198,6 @@ async function setup() {
   function makePageForEpisodes(episodeList) {
     const rootElem = document.getElementById("root");
     rootElem.innerHTML = "";
-
-    const episodesContainer = document.createElement("div");
-    episodesContainer.classList.add("episodes-container");
 
     //Displays all episode cards
     const allEpisodesList = episodeList.map(allEpisodesCard);
@@ -147,17 +230,18 @@ async function setup() {
       "E" +
       episodeNumber.padStart(2, "0"); //create Episode Code
 
-    episodeCard(
-      "img",
-      `${episode.image.medium}`,
-      episode.image.medium,
-      cardForEpisodes
-    );
+    const imageUrl = episode.image
+      ? episode.image.medium
+      : "https://via.placeholder.com/210x295?text=No+Image";
+
+    episodeCard("img", imageUrl, imageUrl, cardForEpisodes);
     episodeCard("h3", `${episode.name}`, null, cardForEpisodes);
     episodeCard("p", `${episodeCode}`, null, cardForEpisodes);
 
     const summaryDiv = document.createElement("div");
-    summaryDiv.innerHTML = `Summary:${episode.summary}`;
+    summaryDiv.innerHTML = `Summary: ${
+      episode.summary || "No summary available."
+    }`;
     cardForEpisodes.appendChild(summaryDiv);
 
     return cardForEpisodes;
