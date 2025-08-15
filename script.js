@@ -2,9 +2,10 @@
 let allEpisodes = [];
 let allShows = [];
 let currentShow = null;
+const rootElement = document.getElementById("root");
 
 async function setup() {
-  const rootElement = document.getElementById("root");
+  // const rootElement = document.getElementById("root");
   rootElement.textContent = "Loading shows and episodes, Please wait...";
 
   // Fetch shows data from the API first
@@ -27,7 +28,7 @@ async function setup() {
 
   // Function to load episodes for a selected show
   async function loadEpisodesForShow(showId) {
-    const rootElement = document.getElementById("root");
+    // const rootElement = document.getElementById("root");
     rootElement.textContent = "Loading episodes, Please wait...";
 
     // Fetch episode data from the API (this is an async operation)
@@ -201,14 +202,15 @@ async function setup() {
     //Displays all episode cards
     const allEpisodesList = episodeList.map(allEpisodesCard);
     rootElem.append(...allEpisodesList);
-//handles counter for episodes
-    const EpisodeCounterContainer = document.getElementById("episode-count-container");
-    EpisodeCounterContainer.innerHTML = ""
+    //handles counter for episodes
+    const EpisodeCounterContainer = document.getElementById(
+      "episode-count-container"
+    );
+    EpisodeCounterContainer.innerHTML = "";
     const header = document.createElement("div");
     header.id = "episode-count";
     header.textContent = `Got ${episodeList.length} episode(s)`;
     EpisodeCounterContainer.appendChild(header);
-
   }
 
   // Helper function. Creates and appends HTML element to a parent element e.g <h3>, <p>, <img> etc
@@ -236,7 +238,6 @@ async function setup() {
       seasonNumber.padStart(2, "0") +
       "E" +
       episodeNumber.padStart(2, "0"); //create Episode Code
-
     const imageUrl = episode.image
       ? episode.image.medium
       : "https://via.placeholder.com/210x295?text=No+Image";
@@ -253,6 +254,39 @@ async function setup() {
 
     return cardForEpisodes;
   }
+
+  function makePageForTvShows(showList) {
+    rootElement.innerHTML = "";
+    // div to hold all tv show
+    const showListDiv = document.createElement("div");
+    showListDiv.id = "show-list";
+    rootElement.appendChild(showListDiv);
+    //clone tv show template
+    const templateTvShow = document.getElementById("tv-show-template");
+
+    showList.forEach((show) => {
+      const showCard = templateTvShow.content.cloneNode(true);
+      showCard.querySelector(".tv-show-title").textContent = show.name;
+      showCard.querySelector(".tv-show-rating").textContent =
+        show.rating?.average || "N/A";
+      showCard.querySelector(".tv-show-genre").textContent =
+        show.genres.join(",") || "N/A";
+      showCard.querySelector(".tv-show-status").textContent = show.status;
+      showCard.querySelector(".tv-show-runtime").textContent =
+        show.runtime || "N/A";
+      showCard.querySelector(".tv-show-summary").innerHTML = show.summary;
+      // Handles tv show missing images
+      const imgElementTvShow = showCard.querySelector(".tv-show-img");
+      if (show.image) {
+        imgElementTvShow.src = show.image?.medium || null;
+      } else {
+        imgElementTvShow.style.display = "none";
+      }
+      showListDiv.appendChild(showCard);
+    });
+  }
+
+  makePageForTvShows(allShows);
 }
 
 window.onload = setup;
