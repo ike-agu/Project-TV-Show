@@ -201,12 +201,9 @@ async function setup() {
     //Displays all episode cards
     const allEpisodesList = episodeList.map(allEpisodesCard);
     rootElem.append(...allEpisodesList);
-
-    const EpisodeCounterContainer = document.getElementById(
-      "episode-count-container"
-    );
+//handles counter for episodes
+    const EpisodeCounterContainer = document.getElementById("episode-count-container");
     EpisodeCounterContainer.innerHTML = ""
-
     const header = document.createElement("div");
     header.id = "episode-count";
     header.textContent = `Got ${episodeList.length} episode(s)`;
