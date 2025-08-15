@@ -20,10 +20,11 @@ html {
   display: flex;
   flex-wrap: wrap;
 }
+
 .controls-container select,
 .controls-container input[type="text"],
 .controls-container input[type="search"] {
-  margin: 15px 0 15px 0;
+  margin: 15px 10px 15px 10px;
   padding: 12px 18px;
   border-radius: 20px;
   border: 1.2px solid #b8c0c7;
@@ -60,6 +61,8 @@ html {
 .card-for-episodes img {
   width: 100%;
   border-radius: 3px;
+  display: inline-block; /* or flex/grid depending on layout */
+  vertical-align: top
 }
 
 /*footer*/
@@ -74,4 +77,15 @@ footer a {
 }
 footer a:hover {
   text-decoration: underline;
+}
+
+#episode-count{
+
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+#episode-count-container{
+  text-align: center;
+  margin: 1rem 0;
 }

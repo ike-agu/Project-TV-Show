@@ -198,10 +198,20 @@ async function setup() {
   function makePageForEpisodes(episodeList) {
     const rootElem = document.getElementById("root");
     rootElem.innerHTML = "";
-
     //Displays all episode cards
     const allEpisodesList = episodeList.map(allEpisodesCard);
     rootElem.append(...allEpisodesList);
+
+    const EpisodeCounterContainer = document.getElementById(
+      "episode-count-container"
+    );
+    EpisodeCounterContainer.innerHTML = ""
+
+    const header = document.createElement("div");
+    header.id = "episode-count";
+    header.textContent = `Got ${episodeList.length} episode(s)`;
+    EpisodeCounterContainer.appendChild(header);
+
   }
 
   // Helper function. Creates and appends HTML element to a parent element e.g <h3>, <p>, <img> etc
