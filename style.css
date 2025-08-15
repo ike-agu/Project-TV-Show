@@ -100,3 +100,7 @@ footer a:hover {
   color: blue;
   text-decoration: underline;
 }
+
+#selected-episode{
+  width: 15%;
+}

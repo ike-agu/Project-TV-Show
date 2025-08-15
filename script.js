@@ -5,7 +5,15 @@ let currentShow = null;
 const rootElement = document.getElementById("root");
 
 async function setup() {
-  // const rootElement = document.getElementById("root");
+  //back btn to all shows page
+  const backToShowsBtn = document.getElementById("back-to-shows");
+  backToShowsBtn.style.display = "none";
+
+  backToShowsBtn.addEventListener("click", function (event) {
+    console.log("back button clicked");
+    makePageForTvShows(allShows);
+    backToShowsBtn.style.display = "none";
+  });
   rootElement.textContent = "Loading shows and episodes, Please wait...";
 
   // Fetch shows data from the API first
@@ -16,12 +24,6 @@ async function setup() {
     rootElement.textContent = "";
     createControls();
     createFooter();
-
-    // Select first show by default and load its episodes
-    if (allShows.length > 0) {
-      currentShow = allShows[0];
-      await loadEpisodesForShow(currentShow.id);
-    }
   } else {
     rootElement.textContent = showsData.error;
   }
@@ -41,6 +43,8 @@ async function setup() {
 
       // Update episode dropdown
       updateEpisodeDropdown();
+      // back btn to shows
+      backToShowsBtn.style.display = "block";
 
       // Clear search input
       const searchInput = document.getElementById("search");
@@ -63,6 +67,11 @@ async function setup() {
     showSelectElem.id = "selected-show";
     showSelectElem.name = "shows";
 
+    const showDefaultOption = document.createElement("option");
+    showDefaultOption.value = "";
+    showDefaultOption.textContent = "--- All Tv Shows ---";
+    showSelectElem.appendChild(showDefaultOption);
+
     // Add shows to dropdown
     allShows.forEach((show) => {
       const option = document.createElement("option");
@@ -78,10 +87,10 @@ async function setup() {
     selectElem.id = "selected-episode";
     selectElem.name = "episodes";
 
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Show all episodes";
-    selectElem.appendChild(defaultOption);
+    // const defaultOption = document.createElement("option");
+    // defaultOption.value = "";
+    // defaultOption.textContent = "Show all episodes";
+    // selectElem.appendChild(defaultOption);
 
     controlsContainer.appendChild(selectElem);
 
@@ -111,7 +120,7 @@ async function setup() {
 
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
-    defaultOption.textContent = "Show all episodes";
+    defaultOption.textContent = "--- Show all episodes ---";
     selectElem.appendChild(defaultOption);
 
     // Add episodes for current show
@@ -256,6 +265,7 @@ async function setup() {
   }
 
   function makePageForTvShows(showList) {
+    backToShowsBtn.style.display = "none"; // always hide when displaying all shows shows
     rootElement.innerHTML = "";
     // div to hold all tv show
     const showListDiv = document.createElement("div");
