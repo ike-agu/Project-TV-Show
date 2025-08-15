@@ -30,12 +30,11 @@ async function setup() {
 
   // Function to load episodes for a selected show
   async function loadEpisodesForShow(showId) {
+    const tvShowInput = document.getElementById("search-show");
+    tvShowInput.style.display = "none";
 
-    const tvShowInput = document.getElementById("search-show")
-    tvShowInput.style.display = "none"
-
-    const tvShowDropDown = document.getElementById("selected-show")
-    tvShowDropDown.style.display = "none"
+    const tvShowDropDown = document.getElementById("selected-show");
+    tvShowDropDown.style.display = "none";
 
     const selectElem = document.getElementById("selected-episode");
     selectElem.style.display = "block";
@@ -281,10 +280,10 @@ async function setup() {
 
   function makePageForTvShows(showList) {
     backToShowsBtn.style.display = "none"; // always hide when displaying all shows shows
-    const inputForEpisode = document.getElementById("search")
-    inputForEpisode.style.display = "none" //hide episode search input
+    const inputForEpisode = document.getElementById("search");
+    inputForEpisode.style.display = "none"; //hide episode search input
     const dropDownSearchEpisode = document.getElementById("selected-episode");
-    dropDownSearchEpisode.style.display = "none" //hide episode drop down
+    dropDownSearchEpisode.style.display = "none"; //hide episode drop down
 
     const tvShowInput = document.getElementById("search-show");
     tvShowInput.style.display = "block"; //show tv show search input
@@ -297,6 +296,17 @@ async function setup() {
     const showListDiv = document.createElement("div");
     showListDiv.id = "show-list";
     rootElement.appendChild(showListDiv);
+
+    // counter for tv shows
+    const EpisodeCounterContainer = document.getElementById(
+      "episode-count-container"
+    );
+    EpisodeCounterContainer.innerHTML = "";
+    const header = document.createElement("div");
+    header.id = "show-count";
+    header.textContent = `Found ${showList.length} show(s)`;
+    EpisodeCounterContainer.appendChild(header);
+
     //clone tv show template
     const templateTvShow = document.getElementById("tv-show-template");
 
