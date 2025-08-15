@@ -89,3 +89,14 @@ footer a:hover {
   text-align: center;
   margin: 1rem 0;
 }
+
+.tv-show-title{
+  cursor:pointer;
+  /* color: blue;
+  text-decoration: underline; */
+}
+
+.tv-show-title:hover {
+  color: blue;
+  text-decoration: underline;
+}

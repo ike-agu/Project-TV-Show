@@ -266,7 +266,11 @@ async function setup() {
 
     showList.forEach((show) => {
       const showCard = templateTvShow.content.cloneNode(true);
-      showCard.querySelector(".tv-show-title").textContent = show.name;
+      const showTitle = showCard.querySelector(".tv-show-title");
+      showTitle.textContent = show.name;
+      showTitle.addEventListener("click", function () {
+        loadEpisodesForShow(show.id);
+      });
       showCard.querySelector(".tv-show-rating").textContent =
         show.rating?.average || "N/A";
       showCard.querySelector(".tv-show-genre").textContent =
