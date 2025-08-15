@@ -62,7 +62,7 @@ async function setup() {
     const controlsContainer = document.createElement("div");
     controlsContainer.className = "controls-container";
 
-    // Create show select dropdown
+    // Create all shows select dropdown
     const showSelectElem = document.createElement("select");
     showSelectElem.id = "selected-show";
     showSelectElem.name = "shows";
@@ -87,21 +87,23 @@ async function setup() {
     selectElem.id = "selected-episode";
     selectElem.name = "episodes";
 
-    // const defaultOption = document.createElement("option");
-    // defaultOption.value = "";
-    // defaultOption.textContent = "Show all episodes";
-    // selectElem.appendChild(defaultOption);
-
     controlsContainer.appendChild(selectElem);
 
-    // Create a text input for live search functionality
+    // Create a text input for searching episodes live when user type.
     const searchInput = document.createElement("input");
     searchInput.type = "text";
     searchInput.id = "search";
     searchInput.name = "search";
-    searchInput.placeholder = "Search term";
-
+    searchInput.placeholder = "Search Episode...";
     controlsContainer.appendChild(searchInput);
+
+    //create a text input for searching shows live when user type.
+    const searchTvShowInput = document.createElement("input");
+    searchTvShowInput.type = "text";
+    searchTvShowInput.id = "search-show";
+    searchTvShowInput.name = "search-show";
+    searchTvShowInput.placeholder = "Search Tv show...";
+    controlsContainer.appendChild(searchTvShowInput);
 
     const rootElem = document.getElementById("root");
     document.body.insertBefore(controlsContainer, rootElem);
@@ -110,6 +112,7 @@ async function setup() {
     showSelectElem.addEventListener("change", handleShowSelection);
     selectElem.addEventListener("change", handleEpisodeSelection);
     searchInput.addEventListener("input", handleSearch);
+    searchTvShowInput.addEventListener("input", searchForShow);
   }
 
   // Update episode dropdown when show changes
@@ -283,7 +286,7 @@ async function setup() {
       });
       showCard.querySelector(".tv-show-rating").textContent =
         show.rating?.average || "N/A";
-      showCard.querySelector(".tv-show-genre").textContent =
+      showCard.querySelector(".tv-show-genres").textContent =
         show.genres.join(",") || "N/A";
       showCard.querySelector(".tv-show-status").textContent = show.status;
       showCard.querySelector(".tv-show-runtime").textContent =
@@ -301,6 +304,23 @@ async function setup() {
   }
 
   makePageForTvShows(allShows);
+
+  //handle tv show live search as user is typing
+  function searchForShow(event) {
+    const userSearchShow = document.getElementById("selected-show");
+    userSearchShow.value = "";
+    const searchTerm = event.target.value.toLowerCase();
+    //filter all shows that matches user search by name, genre, summary etc
+    const filteredShows = allShows.filter((show) => {
+      return (
+        (show.name && show.name.toLowerCase().includes(searchTerm)) ||
+        (show.summary && show.summary.toLowerCase().includes(searchTerm)) ||
+        (show.genres &&
+          show.genres.join(",").toLowerCase().includes(searchTerm))
+      );
+    });
+    makePageForTvShows(filteredShows);
+  }
 }
 
 window.onload = setup;
