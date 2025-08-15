@@ -30,6 +30,18 @@ async function setup() {
 
   // Function to load episodes for a selected show
   async function loadEpisodesForShow(showId) {
+
+    const tvShowInput = document.getElementById("search-show")
+    tvShowInput.style.display = "none"
+
+    const tvShowDropDown = document.getElementById("selected-show")
+    tvShowDropDown.style.display = "none"
+
+    const selectElem = document.getElementById("selected-episode");
+    selectElem.style.display = "block";
+
+    const searchInput = document.getElementById("search");
+    searchInput.style.display = "block";
     // const rootElement = document.getElementById("root");
     rootElement.textContent = "Loading episodes, Please wait...";
 
@@ -269,6 +281,17 @@ async function setup() {
 
   function makePageForTvShows(showList) {
     backToShowsBtn.style.display = "none"; // always hide when displaying all shows shows
+    const inputForEpisode = document.getElementById("search")
+    inputForEpisode.style.display = "none" //hide episode search input
+    const dropDownSearchEpisode = document.getElementById("selected-episode");
+    dropDownSearchEpisode.style.display = "none" //hide episode drop down
+
+    const tvShowInput = document.getElementById("search-show");
+    tvShowInput.style.display = "block"; //show tv show search input
+
+    const tvShowDropDown = document.getElementById("selected-show");
+    tvShowDropDown.style.display = "block"; //show tv show drop down select
+
     rootElement.innerHTML = "";
     // div to hold all tv show
     const showListDiv = document.createElement("div");
