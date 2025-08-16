@@ -1,10 +1,19 @@
-//Global variable to store all data
+//Global variables to store all data
 let allEpisodes = [];
 let allShows = [];
 let currentShow = null;
+const rootElement = document.getElementById("root");
 
 async function setup() {
-  const rootElement = document.getElementById("root");
+  //back btn to all shows page display none
+  const backToShowsBtn = document.getElementById("back-to-shows");
+  backToShowsBtn.style.display = "none";
+
+  backToShowsBtn.addEventListener("click", function (event) {
+    console.log("back button clicked");
+    makePageForTvShows(allShows);
+    backToShowsBtn.style.display = "none";
+  });
   rootElement.textContent = "Loading shows and episodes, Please wait...";
 
   // Fetch shows data from the API first
@@ -15,19 +24,24 @@ async function setup() {
     rootElement.textContent = "";
     createControls();
     createFooter();
-
-    // Select first show by default and load its episodes
-    if (allShows.length > 0) {
-      currentShow = allShows[0];
-      await loadEpisodesForShow(currentShow.id);
-    }
   } else {
     rootElement.textContent = showsData.error;
   }
 
   // Function to load episodes for a selected show
   async function loadEpisodesForShow(showId) {
-    const rootElement = document.getElementById("root");
+    const tvShowInput = document.getElementById("search-show");
+    tvShowInput.style.display = "none";
+
+    const tvShowDropDown = document.getElementById("selected-show");
+    tvShowDropDown.style.display = "none";
+
+    const selectElem = document.getElementById("selected-episode");
+    selectElem.style.display = "block";
+
+    const searchInput = document.getElementById("search");
+    searchInput.style.display = "block";
+    // const rootElement = document.getElementById("root");
     rootElement.textContent = "Loading episodes, Please wait...";
 
     // Fetch episode data from the API (this is an async operation)
@@ -40,6 +54,8 @@ async function setup() {
 
       // Update episode dropdown
       updateEpisodeDropdown();
+      // back btn to shows
+      backToShowsBtn.style.display = "block";
 
       // Clear search input
       const searchInput = document.getElementById("search");
@@ -57,10 +73,15 @@ async function setup() {
     const controlsContainer = document.createElement("div");
     controlsContainer.className = "controls-container";
 
-    // Create show select dropdown
+    // Create all shows select dropdown
     const showSelectElem = document.createElement("select");
     showSelectElem.id = "selected-show";
     showSelectElem.name = "shows";
+
+    const showDefaultOption = document.createElement("option");
+    showDefaultOption.value = "";
+    showDefaultOption.textContent = "--- All Tv Shows ---";
+    showSelectElem.appendChild(showDefaultOption);
 
     // Add shows to dropdown
     allShows.forEach((show) => {
@@ -77,21 +98,23 @@ async function setup() {
     selectElem.id = "selected-episode";
     selectElem.name = "episodes";
 
-    const defaultOption = document.createElement("option");
-    defaultOption.value = "";
-    defaultOption.textContent = "Show all episodes";
-    selectElem.appendChild(defaultOption);
-
     controlsContainer.appendChild(selectElem);
 
-    // Create a text input for live search functionality
+    // Create a text input for searching episodes live when user type.
     const searchInput = document.createElement("input");
     searchInput.type = "text";
     searchInput.id = "search";
     searchInput.name = "search";
-    searchInput.placeholder = "Search term";
-
+    searchInput.placeholder = "---Search Episode---";
     controlsContainer.appendChild(searchInput);
+
+    //create a text input for searching shows live when user type.
+    const searchTvShowInput = document.createElement("input");
+    searchTvShowInput.type = "text";
+    searchTvShowInput.id = "search-show";
+    searchTvShowInput.name = "search-show";
+    searchTvShowInput.placeholder = "Search Tv show...";
+    controlsContainer.appendChild(searchTvShowInput);
 
     const rootElem = document.getElementById("root");
     document.body.insertBefore(controlsContainer, rootElem);
@@ -100,6 +123,7 @@ async function setup() {
     showSelectElem.addEventListener("change", handleShowSelection);
     selectElem.addEventListener("change", handleEpisodeSelection);
     searchInput.addEventListener("input", handleSearch);
+    searchTvShowInput.addEventListener("input", searchForShow);
   }
 
   // Update episode dropdown when show changes
@@ -110,7 +134,7 @@ async function setup() {
 
     const defaultOption = document.createElement("option");
     defaultOption.value = "";
-    defaultOption.textContent = "Show all episodes";
+    defaultOption.textContent = "--- Show all episodes ---";
     selectElem.appendChild(defaultOption);
 
     // Add episodes for current show
@@ -186,7 +210,7 @@ async function setup() {
     const footer = document.createElement("footer");
     // Create link to TVMaze (data source)
     const sourceLink = document.createElement("a");
-    sourceLink.textContent = "TV Shows and Series are from TVMaze.com";
+    sourceLink.textContent = "TV Shows from TVMaze.com";
     sourceLink.href = "https://www.tvmaze.com/";
     sourceLink.target = "_blank";
     sourceLink.rel = "noopener noreferrer";
@@ -198,10 +222,18 @@ async function setup() {
   function makePageForEpisodes(episodeList) {
     const rootElem = document.getElementById("root");
     rootElem.innerHTML = "";
-
     //Displays all episode cards
     const allEpisodesList = episodeList.map(allEpisodesCard);
     rootElem.append(...allEpisodesList);
+    //handles counter for episodes
+    const EpisodeCounterContainer = document.getElementById(
+      "episode-count-container"
+    );
+    EpisodeCounterContainer.innerHTML = "";
+    const header = document.createElement("div");
+    header.id = "episode-count";
+    header.textContent = `Got ${episodeList.length} episode(s)`;
+    EpisodeCounterContainer.appendChild(header);
   }
 
   // Helper function. Creates and appends HTML element to a parent element e.g <h3>, <p>, <img> etc
@@ -229,7 +261,6 @@ async function setup() {
       seasonNumber.padStart(2, "0") +
       "E" +
       episodeNumber.padStart(2, "0"); //create Episode Code
-
     const imageUrl = episode.image
       ? episode.image.medium
       : "https://via.placeholder.com/210x295?text=No+Image";
@@ -245,6 +276,84 @@ async function setup() {
     cardForEpisodes.appendChild(summaryDiv);
 
     return cardForEpisodes;
+  }
+
+  function makePageForTvShows(showList) {
+    backToShowsBtn.style.display = "none"; // always hide when displaying all shows shows
+    const inputForEpisode = document.getElementById("search");
+    inputForEpisode.style.display = "none"; //hide episode search input
+    const dropDownSearchEpisode = document.getElementById("selected-episode");
+    dropDownSearchEpisode.style.display = "none"; //hide episode drop down
+
+    const tvShowInput = document.getElementById("search-show");
+    tvShowInput.style.display = "block"; //show tv show search input
+
+    const tvShowDropDown = document.getElementById("selected-show");
+    tvShowDropDown.style.display = "block"; //show tv show drop down select
+
+    rootElement.innerHTML = "";
+    // div to hold all tv show
+    const showListDiv = document.createElement("div");
+    showListDiv.id = "show-list";
+    rootElement.appendChild(showListDiv);
+
+    // counter for tv shows
+    const EpisodeCounterContainer = document.getElementById(
+      "episode-count-container"
+    );
+    EpisodeCounterContainer.innerHTML = "";
+    const header = document.createElement("div");
+    header.id = "show-count";
+    header.textContent = `Found ${showList.length} show(s)`;
+    EpisodeCounterContainer.appendChild(header);
+
+    //clone tv show template
+    const templateTvShow = document.getElementById("tv-show-template");
+
+    showList.forEach((show) => {
+      const showCard = templateTvShow.content.cloneNode(true);
+      const showTitle = showCard.querySelector(".tv-show-title");
+      showTitle.textContent = show.name;
+      showTitle.addEventListener("click", function () {
+        loadEpisodesForShow(show.id);
+      });
+      showCard.querySelector(".tv-show-rating").innerHTML =
+        "<strong>Rating:</strong> " + show.rating?.average || "N/A";
+      showCard.querySelector(".tv-show-genres").innerHTML =
+        "<strong>Genres:</strong> " + show.genres.join(",") || "N/A";
+      showCard.querySelector(".tv-show-status").innerHTML =
+        "<strong>Status:</strong> " + show.status;
+      showCard.querySelector(".tv-show-runtime").innerHTML =
+        "<strong>Runtime:</strong> " + show.runtime || "N/A";
+      showCard.querySelector(".tv-show-summary").innerHTML = show.summary;
+      // Handles tv show missing images
+      const imgElementTvShow = showCard.querySelector(".tv-show-img");
+      if (show.image) {
+        imgElementTvShow.src = show.image?.medium || null;
+      } else {
+        imgElementTvShow.style.display = "none";
+      }
+      showListDiv.appendChild(showCard);
+    });
+  }
+
+  makePageForTvShows(allShows);
+
+  //handle tv show live search as user is typing
+  function searchForShow(event) {
+    const userSearchShow = document.getElementById("selected-show");
+    userSearchShow.value = "";
+    const searchTerm = event.target.value.toLowerCase();
+    //filter all shows that matches user search by name, genre, summary etc
+    const filteredShows = allShows.filter((show) => {
+      return (
+        (show.name && show.name.toLowerCase().includes(searchTerm)) ||
+        (show.summary && show.summary.toLowerCase().includes(searchTerm)) ||
+        (show.genres &&
+          show.genres.join(",").toLowerCase().includes(searchTerm))
+      );
+    });
+    makePageForTvShows(filteredShows);
   }
 }
 

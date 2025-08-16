@@ -27,7 +27,7 @@ async function getShowsList() {
     return {
       success: false,
       error:
-        "Sorry, something went wrong while loading shows list. Please try refreshing the page.",
+        "Sorry, something went wrong while loading, Please try refreshing the page.",
     };
   }
 }
