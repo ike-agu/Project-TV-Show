@@ -47,7 +47,6 @@ html {
 .controls-container {
   display: flex;
   margin: 3rem auto;
-
 }
 
 .card-for-episodes {
@@ -71,7 +70,125 @@ html {
   vertical-align: top;
 }
 
-/*footer*/
+#episode-count {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+#episode-count-container {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.tv-show-title {
+  cursor: pointer;
+  color: blue;
+  text-decoration: none;
+  margin-left: 3rem;
+  font-size: 29px;
+}
+
+.tv-show-title:hover {
+  color: blue;
+  text-decoration: underline;
+}
+
+#selected-episode {
+  width: 25%;
+}
+#selected-episode {
+  color: #777b82;
+}
+
+#show-list {
+  padding: 1rem;
+  background: rgb(2, 0, 0);
+  border-radius: 10px;
+}
+
+.tv-show-card {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  margin: 2rem;
+  gap: 2rem;
+  align-items: start;
+}
+
+.tv-show-card-container {
+  border: 1px solid rgb(222, 215, 215);
+  margin: 10px 0;
+  box-shadow: 0 2px 5px rgba(126, 121, 121, 0.8);
+  border-radius: 15px;
+  height: auto; /* 👈 only as tall as needed */
+  align-items: start; /* prevents items from stretching vertically */
+  background-color: rgb(235, 230, 230);
+  color: rgb(61, 52, 52);
+}
+
+.tv-show-summary {
+  font-size: 18px;
+  line-height: 1.4;
+  text-align: justify;
+  /* reduce the amount of text shown to 4 lines*/
+  display: -webkit-box;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin: 1px;
+}
+.tv-show-summary p {
+  margin: 1px;
+}
+
+.card-info {
+  border: 2px solid #d5cfcf;
+  padding: 10px;
+  background: rgb(152, 64, 64);
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(65, 28, 28, 0.5);
+}
+
+.card-info p {
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+}
+
+.tv-show-img {
+  width: 150px;
+}
+
+.img-div img {
+  display: block;
+  margin-left: auto;
+}
+
+#show-count,
+#episode-count {
+  width: 100%;
+  margin: 0 auto;
+  background: rgb(2, 0, 0);
+  padding: 15px;
+  color: rgb(255, 255, 255);
+  position: fixed;
+  top: 0;
+}
+/* btn back to show */
+#back-to-shows {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 1000;
+  padding: 8px 12px;
+  background-color: #b61111;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/*footer and details*/
 footer {
   text-align: center;
   font-size: 0.9rem;
@@ -91,84 +208,4 @@ footer a {
 }
 footer a:hover {
   text-decoration: underline;
-}
-
-#episode-count {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
-
-#episode-count-container {
-  text-align: center;
-  margin: 1rem 0;
-
-}
-
-.tv-show-title {
-  cursor: pointer;
-  color: blue;
-  text-decoration: underline;
-      margin-left: 3rem;
-    font-size: 35px;
-}
-
-.tv-show-title:hover {
-  color: blue;
-  text-decoration: underline;
-}
-
-#selected-episode {
-  width: 25%;
-}
-#selected-episode  {
-  color: #777b82;
-}
-
-#show-list {
-  padding: 1rem;
-}
-
-.tv-show-card {
-  display: grid;
-  grid-template-columns: 1fr 3fr 0.5fr;
-  margin: 2rem;
-  gap: 2rem;
-}
-
-.tv-show-card-container {
-  border: 1px solid rgb(222, 215, 215);
-  margin: 10px 0;
-  box-shadow: 0 2px 5px rgba(126, 121, 121, 0.8);
-  border-radius: 15px;
-}
-
-.card-info {
-  border: 2px solid #d5cfcf;
-  padding: 10px;
-  background: white;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(65, 28, 28, 0.5);
-}
-
-#show-count, #episode-count{
-  width: 100%;
-  margin: 0 auto;
-  background: rgb(2, 0, 0);
-  padding: 15px;
-  color: rgb(255, 255, 255);
-  position: fixed;
-  top: 0;
-}
-
-#back-to-shows{
-  position: fixed;
-  top: 10px;
-  right: 20px;
-  z-index: 1000;
-  padding: 10px 15px;
-  background-color: #b61111;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }

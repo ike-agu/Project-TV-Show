@@ -1,11 +1,11 @@
-//Global variable to store all data
+//Global variables to store all data
 let allEpisodes = [];
 let allShows = [];
 let currentShow = null;
 const rootElement = document.getElementById("root");
 
 async function setup() {
-  //back btn to all shows page
+  //back btn to all shows page display none
   const backToShowsBtn = document.getElementById("back-to-shows");
   backToShowsBtn.style.display = "none";
 
@@ -105,7 +105,7 @@ async function setup() {
     searchInput.type = "text";
     searchInput.id = "search";
     searchInput.name = "search";
-    searchInput.placeholder = "Search Episode...";
+    searchInput.placeholder = "---Search Episode---";
     controlsContainer.appendChild(searchInput);
 
     //create a text input for searching shows live when user type.
@@ -210,7 +210,7 @@ async function setup() {
     const footer = document.createElement("footer");
     // Create link to TVMaze (data source)
     const sourceLink = document.createElement("a");
-    sourceLink.textContent = "TV Shows and Series are from TVMaze.com";
+    sourceLink.textContent = "TV Shows from TVMaze.com";
     sourceLink.href = "https://www.tvmaze.com/";
     sourceLink.target = "_blank";
     sourceLink.rel = "noopener noreferrer";
@@ -317,13 +317,14 @@ async function setup() {
       showTitle.addEventListener("click", function () {
         loadEpisodesForShow(show.id);
       });
-      showCard.querySelector(".tv-show-rating").textContent =
-        show.rating?.average || "N/A";
-      showCard.querySelector(".tv-show-genres").textContent =
-        show.genres.join(",") || "N/A";
-      showCard.querySelector(".tv-show-status").textContent = show.status;
-      showCard.querySelector(".tv-show-runtime").textContent =
-        show.runtime || "N/A";
+      showCard.querySelector(".tv-show-rating").innerHTML =
+        "<strong>Rating:</strong> " + show.rating?.average || "N/A";
+      showCard.querySelector(".tv-show-genres").innerHTML =
+        "<strong>Genres:</strong> " + show.genres.join(",") || "N/A";
+      showCard.querySelector(".tv-show-status").innerHTML =
+        "<strong>Status:</strong> " + show.status;
+      showCard.querySelector(".tv-show-runtime").innerHTML =
+        "<strong>Runtime:</strong> " + show.runtime || "N/A";
       showCard.querySelector(".tv-show-summary").innerHTML = show.summary;
       // Handles tv show missing images
       const imgElementTvShow = showCard.querySelector(".tv-show-img");
