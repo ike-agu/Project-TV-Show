@@ -46,7 +46,8 @@ html {
 
 .controls-container {
   display: flex;
-  margin: auto;
+  margin: 3rem auto;
+
 }
 
 .card-for-episodes {
@@ -74,7 +75,7 @@ html {
 footer {
   text-align: center;
   font-size: 0.9rem;
-  
+
   position: fixed;
   left: 0;
   bottom: 0;
@@ -86,7 +87,7 @@ footer {
 }
 footer a {
   text-decoration: none;
-  color: #3366cc;
+  color: #fcfcfc;
 }
 footer a:hover {
   text-decoration: underline;
@@ -100,12 +101,15 @@ footer a:hover {
 #episode-count-container {
   text-align: center;
   margin: 1rem 0;
+
 }
 
 .tv-show-title {
   cursor: pointer;
-  /* color: blue;
-  text-decoration: underline; */
+  color: blue;
+  text-decoration: underline;
+      margin-left: 3rem;
+    font-size: 35px;
 }
 
 .tv-show-title:hover {
@@ -114,7 +118,10 @@ footer a:hover {
 }
 
 #selected-episode {
-  width: 15%;
+  width: 25%;
+}
+#selected-episode  {
+  color: #777b82;
 }
 
 #show-list {
@@ -143,12 +150,25 @@ footer a:hover {
   box-shadow: 0 2px 5px rgba(65, 28, 28, 0.5);
 }
 
-#show-count {
-  border: 1px solid rgb(222, 215, 215);
+#show-count, #episode-count{
   width: 100%;
   margin: 0 auto;
-  background: #d5cfcf;
-  border-radius: 5px;
+  background: rgb(2, 0, 0);
   padding: 15px;
-  color: red;
+  color: rgb(255, 255, 255);
+  position: fixed;
+  top: 0;
+}
+
+#back-to-shows{
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  z-index: 1000;
+  padding: 10px 15px;
+  background-color: #b61111;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
