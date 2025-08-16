@@ -142,15 +142,15 @@ html {
 }
 
 .card-info {
-  border: 2px solid #d5cfcf;
+  border: 1px solid #e1dbdb;
   padding: 10px;
-  background: rgb(152, 64, 64);
+  background: rgb(255, 255, 255);
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(65, 28, 28, 0.5);
+  box-shadow: 0 2px 5px rgba(65, 28, 28, 1.2);
 }
 
 .card-info p {
-  color: rgb(255, 255, 255);
+  color: rgb(0, 0, 0);
   font-size: 16px;
 }
 
@@ -161,6 +161,23 @@ html {
 .img-div img {
   display: block;
   margin-left: auto;
+}
+
+.tv-show-title {
+  border: 1px solid rgb(253, 0, 0);
+  width: 18%;
+  padding: 9px;
+  border-radius: 5px;
+  background-color: rgb(230, 19, 19);
+  color: white;
+  text-align: center;
+  font-size: 18px;
+}
+
+.tv-show-title:hover {
+  color: rgb(230, 19, 19);
+  background-color: rgb(255, 255, 255);
+  text-decoration: none;
 }
 
 #show-count,
@@ -180,12 +197,19 @@ html {
   right: 20px;
   z-index: 1000;
   padding: 8px 12px;
-  background-color: #b61111;
+  background-color: rgb(230, 19, 19);
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 18px;
+  margin-right: 11rem;
+}
+
+#back-to-shows:hover {
+  color: red;
+  background-color: white;
+  border: 1px solid red;
 }
 
 /*footer and details*/
