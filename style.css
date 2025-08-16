@@ -74,7 +74,15 @@ html {
 footer {
   text-align: center;
   font-size: 0.9rem;
-  /* color: #444; */
+  
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: rgb(2, 0, 0);
+  color: white;
+  text-align: center;
+  padding: 1.5rem;
 }
 footer a {
   text-decoration: none;
